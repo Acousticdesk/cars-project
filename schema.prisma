@@ -8,17 +8,33 @@ generator client {
 }
 
 model User {
-  id    Int     @default(autoincrement()) @id
-  email String  @unique
-  name  String?
-  listings Listing[]
+  id    Int    @id @default(autoincrement()) @map("user_id")
+  email String @unique @map("user_email")
+
+  @@map("user")
 }
 
-model Listing {
-  id        Int      @default(autoincrement()) @id
-  title     String
-  content   String?
-  published Boolean? @default(false)
-  author    User?    @relation(fields: [authorId], references: [id])
-  authorId  Int?
+model Offering {
+  id          Int      @id @default(autoincrement()) @map("offering_id")
+  title       String   @map("offering_title")
+  description String   @map("offering_description")
+  userId      Int?     @map("user_id")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @map("updated_at")
+
+  @@map("offering")
+}
+
+model CarFax {
+  id   Int    @id @default(autoincrement()) @map("carfax_id")
+  path String @map("carfax_path")
+
+  @@map("carfax")
+}
+
+model OfferingMedia {
+  id   Int    @id @default(autoincrement()) @map("offering_media_id")
+  path String @map("offering_media_path")
+
+  @@map("offering_media")
 }
