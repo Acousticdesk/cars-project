@@ -1,10 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma, Offering } from '@prisma/client';
 import { PrismaService } from '../prisma.service';
+import { PaginationService } from '../pagination/pagination.service';
 
 @Injectable()
 export class OfferingService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private readonly paginationService: PaginationService,
+  ) {}
 
   async offering(
     offeringWhereInput: Prisma.OfferingWhereUniqueInput,
@@ -31,6 +35,24 @@ export class OfferingService {
     });
   }
 
+  async offeringsPaginated(params: {
+    page: number;
+    perPage: number;
+    cursor?: Prisma.OfferingWhereUniqueInput;
+    where?: Prisma.OfferingWhereInput;
+    orderBy?: Prisma.OfferingOrderByWithRelationInput;
+  }): Promise<Offering[]> {
+    const { perPage, cursor, where, orderBy, page } = params;
+    return this.prisma.offering.findMany({
+      skip: this.paginationService.constructPagination({ page, perPage })
+        .offset,
+      take: perPage,
+      cursor,
+      where,
+      orderBy,
+    });
+  }
+
   async createOffering(data: Prisma.OfferingCreateInput): Promise<Offering> {
     return this.prisma.offering.create({
       data,
@@ -48,7 +70,9 @@ export class OfferingService {
     });
   }
 
-  async deleteOffering(where: Prisma.OfferingWhereUniqueInput): Promise<Offering> {
+  async deleteOffering(
+    where: Prisma.OfferingWhereUniqueInput,
+  ): Promise<Offering> {
     return this.prisma.offering.delete({
       where,
     });

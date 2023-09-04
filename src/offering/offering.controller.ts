@@ -1,4 +1,11 @@
-import { Body, Controller, Post, Get } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Post,
+  Get,
+  Query,
+  ParseIntPipe,
+} from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { OfferingService } from './offering.service';
 
@@ -12,7 +19,10 @@ export class OfferingController {
   }
 
   @Get('offerings')
-  getOfferings() {
-    return this.offeringService.offerings({});
+  getOfferings(
+    @Query('page', ParseIntPipe) page = 1,
+    @Query('perPage', ParseIntPipe) perPage = 10,
+  ) {
+    return this.offeringService.offeringsPaginated({ page, perPage });
   }
 }

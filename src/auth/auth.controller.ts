@@ -3,7 +3,6 @@ import { AuthGuard } from '@nestjs/passport';
 
 @Controller('auth')
 export class AuthController {
-
   @UseGuards(AuthGuard('google'))
   @Get('google')
   async googleLogin() {}
@@ -12,9 +11,7 @@ export class AuthController {
   @Get('google/callback')
   async googleLoginCallback(@Req() req, @Res() res) {
     const user = req.user;
-    
-    console.log(user, 'the created user')
-    
+
     res.status(302).redirect('/login');
   }
 }
