@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post, Get } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { OfferingService } from './offering.service';
 
@@ -6,8 +6,13 @@ import { OfferingService } from './offering.service';
 export class OfferingController {
   constructor(private readonly offeringService: OfferingService) {}
 
-  @Post('offering')
+  @Post('offerings')
   createOffering(@Body() createOfferingDTO: Prisma.OfferingCreateInput) {
     return this.offeringService.createOffering(createOfferingDTO);
+  }
+
+  @Get('offerings')
+  getOfferings() {
+    return this.offeringService.offerings({});
   }
 }
