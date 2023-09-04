@@ -15,12 +15,12 @@ model User {
 }
 
 model Offering {
-  id          Int      @id @default(autoincrement()) @map("offering_id")
-  title       String   @map("offering_title")
-  description String   @map("offering_description")
-  userId      Int?     @map("user_id")
-  createdAt   DateTime @default(now()) @map("created_at")
-  updatedAt   DateTime @map("updated_at")
+  id          Int       @id @default(autoincrement()) @map("offering_id")
+  title       String    @map("offering_title")
+  description String    @map("offering_description")
+  userId      Int?      @map("user_id")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime? @map("updated_at")
 
   @@map("offering")
 }
