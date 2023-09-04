@@ -23,6 +23,10 @@ export class OfferingController {
     @Query('page', ParseIntPipe) page = 1,
     @Query('perPage', ParseIntPipe) perPage = 10,
   ) {
-    return this.offeringService.offeringsPaginated({ page, perPage });
+    return this.offeringService.offeringsPaginated({
+      page,
+      perPage,
+      orderBy: { createdAt: 'desc' },
+    });
   }
 }
